@@ -797,166 +797,134 @@ main {
     </div>
   </div>
 
-  <!-- ===== PLAY ===== -->
+<!-- ===== PASSCODE OVERLAY ===== -->
+<div id="passcode-overlay" style="
+  position:fixed;inset:0;z-index:9000;
+  background:linear-gradient(160deg,#FFFBF2 0%,#FFF3C4 100%);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+">
+  <div style="width:100%;max-width:340px;text-align:center;">
+    <div style="font-size:56px;margin-bottom:12px;">🌻</div>
+    <div style="font-family:'Zen Maru Gothic',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px;">ひまわり幼稚園</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:28px;">保護者専用ポータル</div>
+
+    <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 4px 24px rgba(100,70,40,0.12);border:1.5px solid var(--border);">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--ink2);">🔑 合言葉を入力してください</div>
+      <input id="passcode-input" type="password" inputmode="text"
+        placeholder="合言葉"
+        style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;
+               font-family:'Zen Maru Gothic',sans-serif;font-size:16px;text-align:center;
+               background:var(--warm);color:var(--ink);outline:none;letter-spacing:3px;"
+        onkeydown="if(event.key==='Enter')checkPasscode()"
+      >
+      <div id="passcode-error" style="font-size:12px;color:var(--rose);margin-top:8px;min-height:18px;"></div>
+      <button onclick="checkPasscode()" style="
+        width:100%;margin-top:12px;padding:13px;
+        background:var(--sun);color:white;border:none;border-radius:24px;
+        font-family:'Zen Maru Gothic',sans-serif;font-size:14px;font-weight:700;
+        cursor:pointer;box-shadow:0 3px 12px rgba(255,184,48,0.4);
+        transition:all 0.18s;
+      ">入室する 🌻</button>
+      <div style="font-size:11px;color:var(--muted);margin-top:14px;line-height:1.6;">
+        合言葉はLINEグループでご確認ください
+      </div>
+    </div>
+
+    <div style="font-size:10px;color:var(--muted);margin-top:20px;">
+      このポータルは保護者専用です。<br>URLの外部共有はご遠慮ください。
+    </div>
+  </div>
+</div>
+
+<!-- ===== PLAY TAB ===== -->
   <div id="tab-play" class="panel">
-    <div class="post-form">
+
+    <!-- 投稿フォーム -->
+    <div class="post-form" id="play-form">
       <div class="post-label">📍 今いる場所をシェアする</div>
-      <textarea placeholder="「中央公園の噴水前にいます！来られる方ぜひ〜」など気軽に🌿"></textarea>
-      <div class="post-actions">
-        <div class="post-icons">
-          <button class="icon-btn">📷</button>
-          <button class="icon-btn">📍</button>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">ニックネーム</div>
+          <input id="play-nick" type="text" maxlength="20" placeholder="たろうママ"
+            style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 11px;
+                   font-family:'Zen Maru Gothic',sans-serif;font-size:13px;background:var(--warm);
+                   color:var(--ink);outline:none;">
         </div>
-        <button class="btn btn-leaf">投稿する 🌿</button>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">屋内 / 屋外</div>
+          <select id="play-type"
+            style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 11px;
+                   font-family:'Zen Maru Gothic',sans-serif;font-size:13px;background:var(--warm);
+                   color:var(--ink);outline:none;appearance:none;">
+            <option value="屋外">🌳 屋外</option>
+            <option value="屋内">🏠 屋内</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">場所</div>
+      <input id="play-location" type="text" maxlength="40" placeholder="中央公園 大きな滑り台のそば"
+        style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 11px;
+               font-family:'Zen Maru Gothic',sans-serif;font-size:13px;background:var(--warm);
+               color:var(--ink);outline:none;margin-bottom:8px;">
+
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">ひとこと</div>
+      <textarea id="play-msg" placeholder="来られる方はぜひ〜！子ども3人います😊" maxlength="100"
+        style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 11px;
+               font-family:'Zen Maru Gothic',sans-serif;font-size:13px;background:var(--warm);
+               color:var(--ink);outline:none;resize:none;height:64px;"></textarea>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+        <div style="font-size:11px;color:var(--muted);">※投稿は24時間後に自動で非表示</div>
+        <button class="btn btn-leaf" onclick="submitPlay()">投稿する 🌿</button>
       </div>
     </div>
 
-    <div class="card play-border">
-      <div class="card-meta">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="avatar av1">み</div>
-          <div>
-            <div style="font-size:12px;font-weight:700;">みさきママ</div>
-            <div class="card-time">11:30</div>
-          </div>
-        </div>
-        <span class="tag tag-play">屋外</span>
-      </div>
-      <div class="play-loc">🌳 中央公園 大きな滑り台のそば</div>
-      <div class="card-body">今日はここで遊んでいます！子ども4人。来られる方ぜひ！☀️</div>
-      <div class="photo-row">
-        <div class="photo-thumb pt1">🌳</div>
-        <div class="photo-thumb pt2">👦</div>
-        <div class="photo-thumb pt3">🛝</div>
-      </div>
-      <div class="reactions" style="margin-top:10px;">
-        <span class="reaction">👍 3</span>
-        <span class="reaction">行きたい！ 5</span>
-        <span class="reaction">🙌 2</span>
-      </div>
-    </div>
-
-    <div class="card play-border">
-      <div class="card-meta">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="avatar av2">け</div>
-          <div>
-            <div style="font-size:12px;font-weight:700;">けんじパパ</div>
-            <div class="card-time">10:00</div>
-          </div>
-        </div>
-        <span class="tag tag-play">屋内</span>
-      </div>
-      <div class="play-loc">🏛️ 市民プレイルーム（駅前2F）</div>
-      <div class="card-body">雨の日はここ！0〜5歳向け・無料。今日3家族います〜</div>
-      <div class="reactions" style="margin-top:10px;">
-        <span class="reaction">ありがとう！ 4</span>
-        <span class="reaction">知らなかった 2</span>
-      </div>
+    <!-- 投稿一覧 -->
+    <div id="play-loading" style="text-align:center;padding:20px;font-size:13px;color:var(--muted);">読み込み中...</div>
+    <div id="play-list"></div>
+    <div id="play-empty" style="display:none;text-align:center;padding:32px;font-size:13px;color:var(--muted);">
+      <div style="font-size:36px;margin-bottom:10px;">🌳</div>
+      まだ投稿がありません。<br>今いる場所をシェアしてみましょう！
     </div>
   </div>
 
-  <!-- ===== PHOTOS ===== -->
-  <div id="tab-photos" class="panel">
-    <div class="section-label">🖼️ 写真アルバム</div>
-    <div class="card-body" style="margin-bottom:14px;font-size:12px;">📁 Googleフォトの共有アルバムで管理。タップして閲覧・追加できます。</div>
-
-    <div class="album-grid">
-      <div class="album-item">
-        <div class="album-thumb al1">🌸</div>
-        <div class="album-label">
-          <h4>入園式 2025</h4>
-          <p>📷 47枚 · 4/3</p>
-        </div>
-      </div>
-      <div class="album-item">
-        <div class="album-thumb al2">🏃</div>
-        <div class="album-label">
-          <h4>春の遠足</h4>
-          <p>📷 83枚 · 4/11</p>
-        </div>
-      </div>
-      <div class="album-item">
-        <div class="album-thumb al3">🎨</div>
-        <div class="album-label">
-          <h4>工作・お絵かき</h4>
-          <p>📷 31枚 · 随時</p>
-        </div>
-      </div>
-      <div class="album-item">
-        <div class="album-thumb al4">🌻</div>
-        <div class="album-label">
-          <h4>日常のひとこま</h4>
-          <p>📷 126枚 · 随時</p>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:16px;">
-      <button class="btn btn-leaf">＋ 新しいアルバムを作る</button>
-    </div>
-  </div>
-
-  <!-- ===== MSG ===== -->
+<!-- ===== MSG TAB ===== -->
   <div id="tab-msg" class="panel">
+
+    <!-- 投稿フォーム -->
     <div class="post-form">
       <div class="post-label">💬 なんとなくひとこと</div>
-      <textarea placeholder="思ったこと・おすすめ情報・なんでも！✨"></textarea>
-      <div class="post-actions">
-        <div class="post-icons">
-          <button class="icon-btn">😊</button>
-          <button class="icon-btn">📷</button>
-        </div>
-        <button class="btn btn-sun">投稿する ✨</button>
+
+      <div style="margin-bottom:8px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">ニックネーム</div>
+        <input id="msg-nick" type="text" maxlength="20" placeholder="たろうママ"
+          style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 11px;
+                 font-family:'Zen Maru Gothic',sans-serif;font-size:13px;background:var(--warm);
+                 color:var(--ink);outline:none;">
+      </div>
+
+      <textarea id="msg-text" placeholder="思ったこと・おすすめ情報・なんでも！✨" maxlength="200"
+        style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:10px 12px;
+               font-family:'Zen Maru Gothic',sans-serif;font-size:13px;background:var(--warm);
+               color:var(--ink);outline:none;resize:none;height:80px;"></textarea>
+
+      <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:8px;">
+        <button class="btn btn-sun" onclick="submitMsg()">投稿する ✨</button>
       </div>
     </div>
 
-    <div class="card">
-      <div class="msg-row">
-        <div class="avatar av3">さ</div>
-        <div>
-          <div class="msg-name">さとみママ · 14:20</div>
-          <div class="msg-text">駅前のパン屋さん（ブーランジェリーモリ）、子連れでも入りやすくて美味しかったです！🥐</div>
-          <div class="reactions">
-            <span class="reaction">🥐 6</span>
-            <span class="reaction">行ってみる！ 4</span>
-            <span class="reaction">❤️ 8</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="msg-row">
-        <div class="avatar av4">ゆ</div>
-        <div>
-          <div class="msg-name">ゆかりパパ · 12:05</div>
-          <div class="msg-text">うちの子、初めて補助輪なしで自転車に乗れました！🎉 嬉しすぎて投稿してしまいました笑</div>
-          <div class="reactions">
-            <span class="reaction">🎉 12</span>
-            <span class="reaction">すごい！ 9</span>
-            <span class="reaction">👏 7</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="msg-row">
-        <div class="avatar av1">な</div>
-        <div>
-          <div class="msg-name">なつこママ · 9:15</div>
-          <div class="msg-text">来週月曜、内科検診があります。先生から聞きました〜確認を忘れずに！</div>
-          <div class="reactions">
-            <span class="reaction">👍 5</span>
-            <span class="reaction">ありがとう 8</span>
-          </div>
-        </div>
-      </div>
+    <!-- 投稿一覧 -->
+    <div id="msg-loading" style="text-align:center;padding:20px;font-size:13px;color:var(--muted);">読み込み中...</div>
+    <div id="msg-list"></div>
+    <div id="msg-empty" style="display:none;text-align:center;padding:32px;font-size:13px;color:var(--muted);">
+      <div style="font-size:36px;margin-bottom:10px;">💬</div>
+      まだ投稿がありません。<br>気軽にひとこと投稿してみましょう！
     </div>
   </div>
 
-  <!-- ===== EVENTS ===== -->
   <div id="tab-events" class="panel">
     <div style="text-align:right;margin-bottom:14px;">
       <button class="btn btn-sun">＋ イベントを企画</button>
@@ -1230,6 +1198,431 @@ document.addEventListener('touchend', () => {
   const ptr = document.getElementById('ptr');
   if (ptr.classList.contains('show')) {
     ptr.textContent = '🔄 更新中...';
+    setTimeout(() => {
+      ptr.classList.remove('show');
+      ptr.textContent = '↓ 引っ張って更新';
+    }, 1200);
+  }
+});
+<script>
+/* ============================================================
+   ★ SUPABASE 設定 ★
+   以下の2行をSupabaseのプロジェクト情報に書き換えてください
+============================================================ */
+const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_KEY = 'YOUR_ANON_KEY';
+
+/* ============================================================
+   ★ 合言葉の設定 ★
+   保護者に伝える合言葉をここに書いてください
+============================================================ */
+const PASSCODE = 'himawari2025'; // ← ここを変更する
+
+/* ============================================================
+   Supabase クライアント初期化
+============================================================ */
+let sb = null;
+async function initSupabase() {
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+  sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+
+/* ============================================================
+   合言葉認証
+============================================================ */
+function checkPasscode() {
+  const input = document.getElementById('passcode-input').value.trim();
+  const err   = document.getElementById('passcode-error');
+
+  if (input === PASSCODE) {
+    sessionStorage.setItem('auth', '1');
+    document.getElementById('passcode-overlay').style.display = 'none';
+    onAuthSuccess();
+  } else {
+    err.textContent = '合言葉が違います。LINEグループをご確認ください。';
+    document.getElementById('passcode-input').value = '';
+    document.getElementById('passcode-input').focus();
+    // 振動フィードバック
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+  }
+}
+
+function onAuthSuccess() {
+  // ニックネームを前回入力から復元
+  const savedNick = localStorage.getItem('nick') || '';
+  document.getElementById('play-nick').value = savedNick;
+  document.getElementById('msg-nick').value  = savedNick;
+
+  // 初期データ読み込み
+  initSupabase().then(() => {
+    loadPlay();
+    loadMsg();
+  });
+}
+
+// ページロード時：認証チェック
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('auth') === '1') {
+    document.getElementById('passcode-overlay').style.display = 'none';
+    onAuthSuccess();
+  } else {
+    // 少し待ってからフォーカス
+    setTimeout(() => document.getElementById('passcode-input')?.focus(), 300);
+  }
+});
+
+/* ============================================================
+   ユーティリティ
+============================================================ */
+function avatarColor(nick) {
+  const colors = [
+    'linear-gradient(135deg,#FFF3C4,#FFB830)',
+    'linear-gradient(135deg,#E0F9ED,#3DBE7A)',
+    'linear-gradient(135deg,#D6F0FF,#4AABDC)',
+    'linear-gradient(135deg,#FFE8E6,#F4716B)',
+    'linear-gradient(135deg,#EDE8FF,#8B6FE8)',
+  ];
+  let h = 0;
+  for (let c of (nick || '?')) h = (h * 31 + c.charCodeAt(0)) & 0xFFFF;
+  return colors[h % colors.length];
+}
+
+function avatarChar(nick) {
+  return (nick || '？')[0];
+}
+
+function timeStr(iso) {
+  const d = new Date(iso);
+  const now = new Date();
+  const diff = now - d;
+  if (diff < 60000)       return 'たった今';
+  if (diff < 3600000)     return Math.floor(diff/60000) + '分前';
+  if (diff < 86400000)    return Math.floor(diff/3600000) + '時間前';
+  return `${d.getMonth()+1}/${d.getDate()}`;
+}
+
+function saveNick(nick) {
+  if (nick) localStorage.setItem('nick', nick);
+}
+
+/* ============================================================
+   あそびば — 投稿・読み込み・リアクション
+============================================================ */
+async function submitPlay() {
+  const nick     = document.getElementById('play-nick').value.trim() || '名無しさん';
+  const location = document.getElementById('play-location').value.trim();
+  const msg      = document.getElementById('play-msg').value.trim();
+  const type     = document.getElementById('play-type').value;
+
+  if (!location) { alert('場所を入力してください'); return; }
+
+  saveNick(nick);
+
+  const btn = document.querySelector('#play-form .btn-leaf');
+  btn.disabled = true;
+  btn.textContent = '投稿中...';
+
+  const { error } = await sb.from('play_posts').insert({
+    nick, location, message: msg, type,
+    reactions: { '行きたい！': 0, '👍': 0, '🙌': 0 }
+  });
+
+  btn.disabled = false;
+  btn.textContent = '投稿する 🌿';
+
+  if (error) { alert('投稿に失敗しました: ' + error.message); return; }
+
+  document.getElementById('play-location').value = '';
+  document.getElementById('play-msg').value = '';
+  await loadPlay();
+  document.getElementById('tab-play').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function loadPlay() {
+  document.getElementById('play-loading').style.display = 'block';
+  document.getElementById('play-list').innerHTML = '';
+
+  // 24時間以内の投稿のみ取得
+  const since = new Date(Date.now() - 86400000).toISOString();
+  const { data, error } = await sb
+    .from('play_posts')
+    .select('*')
+    .gte('created_at', since)
+    .order('created_at', { ascending: false });
+
+  document.getElementById('play-loading').style.display = 'none';
+
+  if (error || !data || data.length === 0) {
+    document.getElementById('play-empty').style.display = 'block';
+    return;
+  }
+  document.getElementById('play-empty').style.display = 'none';
+
+  const list = document.getElementById('play-list');
+  list.innerHTML = data.map(p => renderPlayCard(p)).join('');
+}
+
+function renderPlayCard(p) {
+  const r = p.reactions || {};
+  const reactions = Object.entries(r).map(([label, count]) => `
+    <span class="reaction" onclick="reactPlay('${p.id}','${label}')" style="cursor:pointer;">
+      ${label} ${count}
+    </span>`).join('');
+
+  return `
+  <div class="card play-border" id="play-${p.id}">
+    <div class="card-meta">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="avatar" style="background:${avatarColor(p.nick)};font-size:15px;font-weight:700;">
+          ${avatarChar(p.nick)}
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">${escHtml(p.nick)}</div>
+          <div class="card-time">${timeStr(p.created_at)}</div>
+        </div>
+      </div>
+      <span class="tag tag-play">${p.type || '屋外'}</span>
+    </div>
+    <div class="play-loc">📍 ${escHtml(p.location)}</div>
+    ${p.message ? `<div class="card-body" style="margin-top:4px;">${escHtml(p.message)}</div>` : ''}
+    <div class="reactions" style="margin-top:10px;">${reactions}</div>
+  </div>`;
+}
+
+async function reactPlay(id, label) {
+  const { data } = await sb.from('play_posts').select('reactions').eq('id', id).single();
+  if (!data) return;
+  const r = data.reactions || {};
+  r[label] = (r[label] || 0) + 1;
+  await sb.from('play_posts').update({ reactions: r }).eq('id', id);
+  await loadPlay();
+}
+
+/* ============================================================
+   ひとこと — 投稿・読み込み・リアクション
+============================================================ */
+async function submitMsg() {
+  const nick = document.getElementById('msg-nick').value.trim() || '名無しさん';
+  const text = document.getElementById('msg-text').value.trim();
+
+  if (!text) { alert('メッセージを入力してください'); return; }
+
+  saveNick(nick);
+
+  const btn = document.querySelector('#tab-msg .btn-sun');
+  btn.disabled = true;
+  btn.textContent = '投稿中...';
+
+  const { error } = await sb.from('msg_posts').insert({
+    nick, text,
+    reactions: { '❤️': 0, '👍': 0, '🎉': 0, '😊': 0 }
+  });
+
+  btn.disabled = false;
+  btn.textContent = '投稿する ✨';
+
+  if (error) { alert('投稿に失敗しました: ' + error.message); return; }
+
+  document.getElementById('msg-text').value = '';
+  await loadMsg();
+}
+
+async function loadMsg() {
+  document.getElementById('msg-loading').style.display = 'block';
+  document.getElementById('msg-list').innerHTML = '';
+
+  const { data, error } = await sb
+    .from('msg_posts')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(30);
+
+  document.getElementById('msg-loading').style.display = 'none';
+
+  if (error || !data || data.length === 0) {
+    document.getElementById('msg-empty').style.display = 'block';
+    return;
+  }
+  document.getElementById('msg-empty').style.display = 'none';
+
+  document.getElementById('msg-list').innerHTML = data.map(p => renderMsgCard(p)).join('');
+}
+
+function renderMsgCard(p) {
+  const r = p.reactions || {};
+  const reactions = Object.entries(r).map(([label, count]) => `
+    <span class="reaction" onclick="reactMsg('${p.id}','${label}')" style="cursor:pointer;">
+      ${label} ${count}
+    </span>`).join('');
+
+  return `
+  <div class="card" id="msg-${p.id}">
+    <div class="msg-row">
+      <div class="avatar" style="background:${avatarColor(p.nick)};font-size:15px;font-weight:700;">
+        ${avatarChar(p.nick)}
+      </div>
+      <div style="flex:1;">
+        <div class="msg-name">${escHtml(p.nick)} · ${timeStr(p.created_at)}</div>
+        <div class="msg-text">${escHtml(p.text)}</div>
+        <div class="reactions">${reactions}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function reactMsg(id, label) {
+  const { data } = await sb.from('msg_posts').select('reactions').eq('id', id).single();
+  if (!data) return;
+  const r = data.reactions || {};
+  r[label] = (r[label] || 0) + 1;
+  await sb.from('msg_posts').update({ reactions: r }).eq('id', id);
+  await loadMsg();
+}
+
+/* ============================================================
+   XSS対策
+============================================================ */
+function escHtml(str) {
+  return String(str || '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+/* ============================================================
+   SERVICE WORKER 登録
+============================================================ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(err => console.log('SW error:', err));
+  });
+}
+
+/* ============================================================
+   PWA インストールバナー（Android/Desktop）
+============================================================ */
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!window.matchMedia('(display-mode: standalone)').matches) {
+    document.getElementById('install-banner').classList.add('show');
+  }
+});
+
+document.getElementById('install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('install-banner').classList.remove('show');
+});
+
+document.getElementById('install-close').addEventListener('click', () => {
+  document.getElementById('install-banner').classList.remove('show');
+});
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-banner').classList.remove('show');
+});
+
+/* ============================================================
+   iOS インストールヒント
+============================================================ */
+function showIOSHint() {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  if (isIOS && !isStandalone) {
+    document.getElementById('ios-hint').classList.toggle('show');
+  } else {
+    switchTab('settings');
+  }
+}
+
+/* ============================================================
+   オフライン検知
+============================================================ */
+function updateOnlineStatus() {
+  const banner = document.getElementById('offline-banner');
+  if (!navigator.onLine) banner.classList.add('show');
+  else banner.classList.remove('show');
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+/* ============================================================
+   タブ切り替え
+============================================================ */
+const TAB_MAP = {
+  home: 'bn-home', notice: 'bn-notice',
+  play: 'bn-play', photos: 'bn-photos',
+  msg: null, events: 'bn-events', settings: null
+};
+
+function switchTab(tab) {
+  const url = new URL(window.location);
+  url.searchParams.set('tab', tab);
+  history.replaceState({}, '', url);
+
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-t').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bot-btn').forEach(b => b.classList.remove('active'));
+
+  const panel = document.getElementById('tab-' + tab);
+  if (panel) panel.classList.add('active');
+
+  const navBtns = document.querySelectorAll('.nav-t');
+  const tabOrder = ['home','notice','play','photos','msg','events'];
+  const idx = tabOrder.indexOf(tab);
+  if (idx >= 0 && navBtns[idx]) navBtns[idx].classList.add('active');
+
+  const bnId = TAB_MAP[tab];
+  if (bnId) document.getElementById(bnId)?.classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// URLパラメータからタブを復元
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get('tab');
+  if (tab && sessionStorage.getItem('auth') === '1') switchTab(tab);
+});
+
+/* ============================================================
+   出欠ボタン
+============================================================ */
+function toggleAtt(btn, type) {
+  const group = btn.closest('.att');
+  group.querySelectorAll('.att-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+/* ============================================================
+   Pull-to-refresh
+============================================================ */
+let startY = 0;
+document.addEventListener('touchstart', e => { startY = e.touches[0].clientY; });
+document.addEventListener('touchmove', e => {
+  const dy = e.touches[0].clientY - startY;
+  const ptr = document.getElementById('ptr');
+  if (dy > 60 && window.scrollY === 0) {
+    ptr.classList.add('show');
+    ptr.textContent = '↓ 離して更新';
+  }
+});
+document.addEventListener('touchend', () => {
+  const ptr = document.getElementById('ptr');
+  if (ptr.classList.contains('show')) {
+    ptr.textContent = '🔄 更新中...';
+    const activeTab = document.querySelector('.panel.active')?.id;
+    if (activeTab === 'tab-play' && sb) loadPlay();
+    if (activeTab === 'tab-msg'  && sb) loadMsg();
     setTimeout(() => {
       ptr.classList.remove('show');
       ptr.textContent = '↓ 引っ張って更新';

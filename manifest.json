@@ -1,7 +1,7 @@
 {
-  "name": "ひまわり幼稚園 保護者ポータル",
-  "short_name": "ひまわり",
-  "description": "ひまわり幼稚園の保護者コミュニティポータル",
+  "name": "川越幼稚園 保護者ポータル",
+  "short_name": "川越",
+  "description": "川越幼稚園の保護者コミュニティポータル",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFBF2",

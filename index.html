@@ -879,7 +879,6 @@ main {
                color:var(--ink);outline:none;resize:none;height:64px;"></textarea>
 
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
-        <div style="font-size:11px;color:var(--muted);">※投稿は24時間後に自動で非表示</div>
         <button class="btn btn-leaf" onclick="submitPlay()">投稿する 🌿</button>
       </div>
     </div>
@@ -932,6 +931,7 @@ main {
     <div class="section-label">🖼️ 写真アルバム</div>
     <div style="margin-bottom:12px;font-size:12px;color:var(--ink2);">
       📁 Googleフォトの共有アルバムです。タップして写真を閲覧・追加できます。
+          学期やイベント単位でアルバム作成します！
     </div>
     <a href="https://photos.app.goo.gl/W2z3C5CBJwhG2s8Q8"
        target="_blank"
@@ -940,21 +940,28 @@ main {
               box-shadow:0 3px 14px rgba(100,70,40,0.09);">
       <div style="font-size:40px;">📸</div>
       <div>
-        <div style="font-size:14px;font-weight:700;color:var(--ink);">川越幼稚園 共有アルバム</div>
+        <div style="font-size:14px;font-weight:700;color:var(--ink);">1学期 共有アルバム</div>
         <div style="font-size:12px;color:var(--muted);margin-top:3px;">タップしてGoogleフォトで開く</div>
       </div>
       <div style="margin-left:auto;font-size:18px;color:var(--muted);">›</div>
     </a>
   </div>
   
-　<div id="tab-events" class="panel">
-    <div class="section-label">🎉 イベント・出欠確認</div>
+<div id="tab-events" class="panel">
+    <div class="section-label">🎉 現在募集中のイベント</div>
 
     <div class="card" style="margin-bottom:14px;">
-      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">📋 現在募集中のイベント</div>
-      <div style="font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:12px;">
-        下のフォームから出欠をご回答ください。<br>
-        回答後は送信ボタンを押してください。
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:20px;">🍺</span>
+        <div style="font-size:14px;font-weight:700;">〇〇飲み会</div>
+      </div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.9;">
+        📅 日付：XX月XX日（X）<br>
+        📍 開催場所：XX<br>
+        ⏰ 締め切り：XX月XX日
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:10px;margin-bottom:12px;">
+        下のフォームから出欠をご回答ください。回答後は送信ボタンを押してください。
       </div>
       <a href="https://forms.gle/E7L4WceMfRvZhDGN7" target="_blank"
          class="btn btn-sun" style="text-decoration:none;display:inline-flex;">
@@ -962,13 +969,25 @@ main {
       </a>
     </div>
 
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLScID4wQslivaWEGW_4hf50TuaoIBZlkHb1dyhV0aVBavCh5mg/viewform?embedded=true"
-      width="100%" height="600"
-      style="border:1.5px solid var(--border);border-radius:14px;display:block;"
-      frameborder="0">
-      読み込み中...
-    </iframe>
+    <div class="card" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:20px;">🍖</span>
+        <div style="font-size:14px;font-weight:700;">〇〇バーベキュー</div>
+      </div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.9;">
+        📅 日付：XX月XX日（X）<br>
+        📍 開催場所：XX<br>
+        ⏰ 締め切り：XX月XX日
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:10px;margin-bottom:12px;">
+        下のフォームから出欠をご回答ください。回答後は送信ボタンを押してください。
+      </div>
+      <a href="https://forms.gle/E7L4WceMfRvZhDGN7" target="_blank"
+         class="btn btn-sun" style="text-decoration:none;display:inline-flex;">
+        📝 別画面でフォームを開く →
+      </a>
+    </div>
+
   </div>
 
 　<!-- ===== SETTINGS / PWA GUIDE ===== -->
@@ -1008,27 +1027,6 @@ main {
       <div class="callout callout-y">
         <div class="ci">⚠️</div>
         <div><strong>iOS 16.4以降はプッシュ通知も使えます！</strong><br>インストール後、アプリ内で「通知を許可」すると新着お知らせが届きます。</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div style="font-size:14px;font-weight:700;margin-bottom:12px;">🌐 無料で公開する方法（Vercel）</div>
-      <div class="callout callout-b">
-        <div class="ci">ℹ️</div>
-        <div>
-          <strong>Vercel（無料）でホスティングする手順：</strong><br>
-          1. <code style="background:white;border-radius:4px;padding:1px 5px;font-size:11px;">vercel.com</code> でアカウント作成<br>
-          2. GitHubリポジトリにファイルをアップ<br>
-          3. Vercelと連携 → 自動でURLが発行される<br>
-          4. そのURLをLINEグループに共有するだけ！<br><br>
-          <strong>発行されるURL例：</strong><br>
-          <code style="background:white;border-radius:4px;padding:1px 5px;font-size:11px;">kawayou-portal.vercel.app</code>
-        </div>
-      </div>
-      <div class="callout callout-g" style="margin-top:10px;">
-        <div class="ci">💡</div>
-        <div><strong>独自ドメインも無料で取得できます</strong><br>
-        <code style="background:white;border-radius:4px;padding:1px 5px;font-size:11px;">kawayou-hogosha.vercel.app</code> のような幼稚園名入りURLにするとより本格的に見えます。</div>
       </div>
     </div>
   </div>
@@ -1237,12 +1235,9 @@ async function loadPlay() {
   document.getElementById('play-loading').style.display = 'block';
   document.getElementById('play-list').innerHTML = '';
 
-  // 24時間以内の投稿のみ取得
-  const since = new Date(Date.now() - 86400000).toISOString();
   const { data, error } = await sb
     .from('play_posts')
     .select('*')
-    .gte('created_at', since)
     .order('created_at', { ascending: false });
 
   document.getElementById('play-loading').style.display = 'none';

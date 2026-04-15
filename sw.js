@@ -1,5 +1,5 @@
-// ひまわり幼稚園ポータル Service Worker
-const CACHE_NAME = 'himawari-v1';
+// 川越幼稚園ポータル Service Worker
+const CACHE_NAME = 'kawagoe-v1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -65,7 +65,7 @@ self.addEventListener('push', event => {
   if (!event.data) return;
   const data = event.data.json();
   event.waitUntil(
-    self.registration.showNotification(data.title || 'ひまわり幼稚園', {
+    self.registration.showNotification(data.title || '川越幼稚園', {
       body: data.body || '',
       icon: '/icons/icon-192.png',
       badge: '/icons/icon-192.png',

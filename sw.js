@@ -1,5 +1,5 @@
 // 川越幼稚園ポータル Service Worker
-const CACHE_NAME = 'kawagoe-v1';
+const CACHE_NAME = 'kawayou-v1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

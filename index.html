@@ -1100,10 +1100,54 @@ function onAuthSuccess() {
   document.getElementById('play-nick').value = savedNick;
   document.getElementById('msg-nick').value  = savedNick;
 
+/* ============================================================
+   ホーム — あそびば・ひとこと 最新投稿者を表示
+============================================================ */
+async function loadHomeLatest() {
+  // あそびば：24時間以内の最新1件
+  const since = new Date(Date.now() - 86400000).toISOString();
+  const { data: playData } = await sb
+    .from('play_posts')
+    .select('nick, created_at')
+    .gte('created_at', since)
+    .order('created_at', { ascending: false })
+    .limit(1);
+
+  const playText = document.getElementById('home-play-text');
+  const playTime = document.getElementById('home-play-time');
+  if (playData && playData.length > 0) {
+    playText.textContent = playData[0].nick + ' さんが投稿しています → タップして見る';
+    playText.style.color = 'var(--ink2)';
+    playTime.textContent = timeStr(playData[0].created_at);
+  } else {
+    playText.textContent = '現在投稿はありません';
+    playTime.textContent = '';
+  }
+
+  // ひとこと：最新1件（期限なし）
+  const { data: msgData } = await sb
+    .from('msg_posts')
+    .select('nick, created_at')
+    .order('created_at', { ascending: false })
+    .limit(1);
+
+  const msgText = document.getElementById('home-msg-text');
+  const msgTime = document.getElementById('home-msg-time');
+  if (msgData && msgData.length > 0) {
+    msgText.textContent = msgData[0].nick + ' さんが投稿しています → タップして見る';
+    msgText.style.color = 'var(--ink2)';
+    msgTime.textContent = timeStr(msgData[0].created_at);
+  } else {
+    msgText.textContent = '現在投稿はありません';
+    msgTime.textContent = '';
+  }
+}
+   
   // 初期データ読み込み
   initSupabase().then(() => {
     loadPlay();
     loadMsg();
+    loadHomeLatest(); // ← この1行を追加
   });
 }
 

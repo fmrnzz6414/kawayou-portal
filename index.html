@@ -694,18 +694,8 @@ main {
 
   <!-- ===== HOME ===== -->
   <div id="tab-home" class="panel active">
-    <div class="weather">
-      <div class="weather-l">
-        <div class="weather-icon">☀️</div>
-        <div>
-          <div class="weather-temp">22°C</div>
-          <div class="weather-desc">晴れのち曇り · 湿度60%</div>
-        </div>
-      </div>
-      <div class="weather-r">今日は公園日和！<br>UV対策お忘れなく ☂️</div>
-    </div>
 
-    <div class="quick-grid">
+     <div class="quick-grid">
       <div class="quick-card" onclick="switchTab('notice')">
         <div class="quick-icon">📢</div>
         <div class="quick-label">お知らせ <span class="badge">2</span></div>
@@ -746,6 +736,29 @@ main {
       </div>
       <div class="card-title">5月の保護者飲み会</div>
       <div class="card-body">参加受付中！現在 ✅12名 · 締め切り5/10</div>
+    
+    <!-- あそびば・ひとこと 最新投稿者 -->
+    <div class="section-label">📍 あそびば · 💬 ひとこと</div>
+
+    <div class="card" onclick="switchTab('play')" style="cursor:pointer;">
+      <div class="card-meta">
+        <span class="tag tag-play">📍 あそびば</span>
+        <span id="home-play-time" class="card-time">読み込み中...</span>
+      </div>
+      <div id="home-play-text" class="card-body" style="color:var(--muted);">
+        最新の投稿を確認しています...
+      </div>
+    </div>
+
+    <div class="card" onclick="switchTab('msg')" style="cursor:pointer;">
+      <div class="card-meta">
+        <span class="tag tag-msg">💬 ひとこと</span>
+        <span id="home-msg-time" class="card-time">読み込み中...</span>
+      </div>
+      <div id="home-msg-text" class="card-body" style="color:var(--muted);">
+        最新の投稿を確認しています...
+      </div>
+     </div>
     </div>
   </div>
 
@@ -919,61 +932,41 @@ main {
     </div>
   </div>
 
-  <div id="tab-events" class="panel">
-    <div style="text-align:right;margin-bottom:14px;">
-      <button class="btn btn-sun">＋ イベントを企画</button>
+　<!-- ===== PHOTOS ===== -->
+  <div id="tab-photos" class="panel">
+    <div class="section-label">🖼️ 写真アルバム</div>
+    <div style="margin-bottom:12px;font-size:12px;color:var(--ink2);">
+      📁 Googleフォトの共有アルバムです。タップして写真を閲覧・追加できます。
     </div>
-
-    <div class="card">
-      <div class="card-meta">
-        <span class="tag tag-event">🍻 飲み会</span>
-        <span class="card-time">受付中</span>
+    <a href="https://photos.app.goo.gl/W2z3C5CBJwhG2s8Q8"
+       target="_blank"
+       style="display:flex;align-items:center;gap:14px;padding:16px;background:white;
+              border-radius:18px;border:1.5px solid var(--border);text-decoration:none;
+              box-shadow:0 3px 14px rgba(100,70,40,0.09);">
+      <div style="font-size:40px;">📸</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--ink);">川越幼稚園 共有アルバム</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px;">タップしてGoogleフォトで開く</div>
       </div>
-      <div class="event-row">
-        <div class="date-box">
-          <div class="mo">5月</div>
-          <div class="dy">17</div>
-          <div class="dw">土</div>
-        </div>
-        <div class="event-info">
-          <h3>5月の保護者飲み会 🍻</h3>
-          <p>📍 居酒屋 はなの木（駅前）<br>⏰ 19:00〜21:00 · 約3,000円</p>
-          <div style="font-size:11px;color:var(--ink2);margin-top:6px;">✅ 12名 · ❌ 3名 · 🤔 5名</div>
-          <div class="att">
-            <button class="att-btn att-y on" onclick="toggleAtt(this,'y')">✅ 参加</button>
-            <button class="att-btn att-n" onclick="toggleAtt(this,'n')">❌ 不参加</button>
-            <button class="att-btn att-m" onclick="toggleAtt(this,'m')">🤔 未定</button>
-          </div>
-        </div>
-      </div>
+      <div style="margin-left:auto;font-size:18px;color:var(--muted);">›</div>
+    </a>
+  </div>
+  
+　<div id="tab-events" class="panel">
+    <div class="section-label">🎉 イベント・出欠確認</div>
+    <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;">
+      以下のフォームから出欠をご回答ください。
     </div>
-
-    <div class="card">
-      <div class="card-meta">
-        <span class="tag tag-play">🌳 お散歩</span>
-        <span class="card-time">計画中</span>
-      </div>
-      <div class="event-row">
-        <div class="date-box" style="background:var(--leaf-l);">
-          <div class="mo" style="color:var(--leaf);">5月</div>
-          <div class="dy">25</div>
-          <div class="dw">日</div>
-        </div>
-        <div class="event-info">
-          <h3>親子で川沿いお散歩会 🚶</h3>
-          <p>📍 桜川沿い遊歩道（駅南口集合）<br>⏰ 10:00〜12:00 · 参加無料</p>
-          <div style="font-size:11px;color:var(--ink2);margin-top:6px;">✅ 6名 · 🤔 4名</div>
-          <div class="att">
-            <button class="att-btn att-y" onclick="toggleAtt(this,'y')">✅ 参加</button>
-            <button class="att-btn att-n" onclick="toggleAtt(this,'n')">❌ 不参加</button>
-            <button class="att-btn att-m" onclick="toggleAtt(this,'m')">🤔 未定</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLScID4wQslivaWEGW_4hf50TuaoIBZlkHb1dyhV0aVBavCh5mg/viewform?embedded=true"
+      width="100%" height="800"
+      style="border:none;border-radius:14px;"
+      frameborder="0">
+      読み込み中...
+    </iframe>
   </div>
 
-  <!-- ===== SETTINGS / PWA GUIDE ===== -->
+　<!-- ===== SETTINGS / PWA GUIDE ===== -->
   <div id="tab-settings" class="panel">
     <div class="section-label">📲 アプリとしてインストールする方法</div>
 

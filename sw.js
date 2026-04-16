@@ -31,6 +31,12 @@ self.addEventListener('activate', event => {
 
 // ネットワークリクエスト：ネットワーク優先、失敗時はキャッシュ
 self.addEventListener('fetch', event => {
+  // GETリクエスト以外（POST等）はキャッシュしない
+  if (event.request.method !== 'GET') return;
+
+  // OneSignal関連はスキップ
+  if (event.request.url.includes('onesignal')) return;
+
   // Google Fontsなど外部リソースはキャッシュ優先
   if (event.request.url.includes('fonts.googleapis') ||
       event.request.url.includes('fonts.gstatic')) {

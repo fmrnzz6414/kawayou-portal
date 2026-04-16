@@ -3,6 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- OneSignal プッシュ通知 -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "178b364e-dcf4-436e-8da5-c449fb8a1c24",
+      notifyButton: { enable: false },
+      allowLocalhostAsSecureOrigin: true,
+    });
+  });
+</script>
+
 <meta name="theme-color" content="#FFB830">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1203,6 +1217,8 @@ function saveNick(nick) {
 ============================================================ */
 async function submitPlay() {
   const nick     = document.getElementById('play-nick').value.trim() || '名無しさん';
+  // OneSignal通知を送る
+  notifyNewPost('play');
   const location = document.getElementById('play-location').value.trim();
   const msg      = document.getElementById('play-msg').value.trim();
   const type     = document.getElementById('play-type').value;
@@ -1313,6 +1329,8 @@ async function submitMsg() {
 
   if (error) { alert('投稿に失敗しました: ' + error.message); return; }
 
+  // OneSignal通知を送る
+  notifyNewPost('msg');
   document.getElementById('msg-text').value = '';
   await loadMsg();
 }
@@ -1519,6 +1537,26 @@ document.addEventListener('touchend', () => {
     }, 1200);
   }
 });
+/* ============================================================
+   プッシュ通知送信
+============================================================ */
+async function notifyNewPost(type) {
+  try {
+    await fetch(
+      'https://zaugcyapvsrnjilxoxgb.supabase.co/functions/v1/notify-new-post',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+        },
+        body: JSON.stringify({ type }),
+      }
+    );
+  } catch (e) {
+    console.log('通知送信エラー（無視）:', e);
+  }
+}
 </script>
 </body>
 </html>

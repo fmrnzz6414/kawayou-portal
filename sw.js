@@ -1,8 +1,5 @@
 // 川越幼稚園ポータル Service Worker
-// OneSignal統合版
-importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
-
-const CACHE_NAME = 'kawayou-v2';
+const CACHE_NAME = 'kawayou-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

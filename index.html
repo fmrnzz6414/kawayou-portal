@@ -1219,8 +1219,6 @@ function saveNick(nick) {
 ============================================================ */
 async function submitPlay() {
   const nick     = document.getElementById('play-nick').value.trim() || '名無しさん';
-  // OneSignal通知を送る
-  notifyNewPost('play');
   const location = document.getElementById('play-location').value.trim();
   const msg      = document.getElementById('play-msg').value.trim();
   const type     = document.getElementById('play-type').value;
@@ -1243,12 +1241,15 @@ async function submitPlay() {
 
   if (error) { alert('投稿に失敗しました: ' + error.message); return; }
 
+  // 投稿成功後に通知を送る
+  notifyNewPost('play');
+
   document.getElementById('play-location').value = '';
   document.getElementById('play-msg').value = '';
   await loadPlay();
   document.getElementById('tab-play').scrollTo({ top: 0, behavior: 'smooth' });
 }
-
+  
 async function loadPlay() {
   document.getElementById('play-loading').style.display = 'block';
   document.getElementById('play-list').innerHTML = '';
@@ -1331,12 +1332,13 @@ async function submitMsg() {
 
   if (error) { alert('投稿に失敗しました: ' + error.message); return; }
 
-  // OneSignal通知を送る
+  // 投稿成功後に通知を送る
   notifyNewPost('msg');
+
   document.getElementById('msg-text').value = '';
   await loadMsg();
 }
-
+  
 async function loadMsg() {
   document.getElementById('msg-loading').style.display = 'block';
   document.getElementById('msg-list').innerHTML = '';

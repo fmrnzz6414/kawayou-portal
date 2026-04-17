@@ -742,7 +742,7 @@ main {
         font-size:12px;font-weight:700;
         cursor:pointer;flex-shrink:0;
       ">許可する</button>
-      <button onclick="document.getElementById('notif-banner').style.display='none'" style="
+      <button onclick="localStorage.setItem('notif-dismissed', Date.now()); document.getElementById('notif-banner').style.display='none'" style="
         background:transparent;border:none;
         color:white;font-size:18px;cursor:pointer;
         flex-shrink:0;padding:4px;
@@ -1587,23 +1587,26 @@ async function requestNotifPermission() {
     return;
   }
   const permission = await Notification.requestPermission();
+  document.getElementById('notif-banner').style.display = 'none';
   if (permission === 'granted') {
-    document.getElementById('notif-banner').style.display = 'none';
-    // OneSignalのService Workerに登録
-    if ('serviceWorker' in navigator) {
-      const reg = await navigator.serviceWorker.ready;
-      alert('通知を許可しました！投稿があるとお知らせします🔔');
-    }
+    localStorage.setItem('notif-granted', '1');
+    alert('通知を許可しました！投稿があるとお知らせします🔔');
   }
 }
 
 // 通知未許可の場合にバナーを表示
 window.addEventListener('DOMContentLoaded', () => {
   if ('Notification' in window && Notification.permission === 'default') {
+    // 一度閉じた場合は24時間表示しない
+    const dismissed = localStorage.getItem('notif-dismissed');
+    const now = Date.now();
+    if (dismissed && now - parseInt(dismissed) < 86400000) return;
+
     setTimeout(() => {
+      if (sessionStorage.getItem('auth') !== '1') return;
       const banner = document.getElementById('notif-banner');
       if (banner) banner.style.display = 'flex';
-    }, 3000); // ログイン後3秒後に表示
+    }, 3000);
   }
 });
    
